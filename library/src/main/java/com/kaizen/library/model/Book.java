@@ -1,5 +1,6 @@
 package com.kaizen.library.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
@@ -26,6 +27,7 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
+    @JsonBackReference
     private Person owner;
 
     // keep both sides in sync when changing owner
