@@ -19,13 +19,20 @@ public class BookController {
         return bookService.getAll();
     }
 
-    @PostMapping
-    public Book create(@RequestBody Book book){
-        return bookService.createBook(book);
+    @PostMapping("/register")
+    public Book register(@RequestBody Book book) {
+        return bookService.registerBook(book);
     }
 
-    @DeleteMapping
-    public void delete(@RequestParam Long id) {
+    @PostMapping("/add")
+    public Book add(@RequestBody Book book){
+        return bookService.addBook(book);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
         bookService.delete(id);
     }
+
+
 }

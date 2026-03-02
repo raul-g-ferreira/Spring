@@ -1,7 +1,7 @@
 spring:
   datasource:
     # 1. Mudamos de 'mem' para 'file' e definimos um caminho (ex: ./data/meubanco)
-    url: jdbc:h2:file:./data/meubanco1
+    url: jdbc:h2:file:./data/meubanco3
     driver-class-name: org.h2.Driver
     username: ra
     password:
@@ -11,6 +11,21 @@ spring:
       enabled: true
       # 2. Caminho do console (opcional, padrão é /h2-console)
       path: /h2-console
+
+  # Configurações de E-mail
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: raul.gferreira7@gmail.com
+    password: ${senha}
+    properties:
+      mail:
+        confirm:
+          debug: true # Ajuda a ver erros de envio no console
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
   jpa:
     hibernate:

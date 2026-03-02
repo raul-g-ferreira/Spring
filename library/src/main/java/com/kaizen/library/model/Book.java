@@ -1,9 +1,10 @@
 package com.kaizen.library.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.annotation.Nonnull;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Objects;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,38 +18,35 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
     @Nonnull
     private String title;
+    private String author;
     private String category;
 
-    @Column(nullable = false, columnDefinition = "boolean default true")
-    private Boolean isAvailable = true;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")
-    @JsonBackReference
-    private Person owner;
+    @Column(columnDefinition = "int default 0")
+    private Integer inStock = 0;
 
-    // keep both sides in sync when changing owner
-    public void setOwner(Person newOwner) {
-        if (this.owner == newOwner) return;
-
-        Person oldOwner = this.owner;
-        this.owner = newOwner;
-
-        if (oldOwner != null && oldOwner.getBookshelf() != null) {
-            oldOwner.getBookshelf().remove(this);
-        }
-        if (newOwner != null) {
-            if (newOwner.getBookshelf() == null) {
-                // defensive: initialize if null
-                // Note: Lombok-generated setter won't override this helper
-                newOwner.setBookshelf(new java.util.ArrayList<>());
-            }
-            if (!newOwner.getBookshelf().contains(this)) {
-                newOwner.getBookshelf().add(this);
-            }
-        }
+    public Book(@Nonnull String title, String author, String category) {
+        this.title = title;
+        this.author = author;
+        this.category = category;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return Objects.equals(title, book.title) && Objects.equals(author, book.author) && Objects.equals(category, book.category);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, author, category);
+    }
+
+
+
+
 }
+
