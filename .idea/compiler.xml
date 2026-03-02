@@ -15,10 +15,17 @@
         <module name="todo-list" />
         <module name="Fridge" />
       </profile>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="AulaDocker" />
+      </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="AulaDocker" options="-parameters" />
       <module name="Fridge" options="-parameters" />
       <module name="first-spring-app" options="-parameters" />
       <module name="library" options="-parameters" />
