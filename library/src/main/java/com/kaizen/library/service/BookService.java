@@ -15,8 +15,6 @@ public class BookService {
     private final BookRepository bookRepository;
     private final BookCodeRepository bookCodeRepository;
 
-
-
     public BookService(BookRepository bookRepository, BookCodeRepository bookCodeRepository) {
         this.bookRepository = bookRepository;
         this.bookCodeRepository = bookCodeRepository;
@@ -68,16 +66,14 @@ public class BookService {
             book.setInStock(book.getInStock() - 1);
             bookRepository.save(book); // Salva o Book primeiro
             bookCodeRepository.save(new BookCode(book)); // Depois cria o BookCode
-        }else {
+        } else {
             throw new BookNotFoundOrUnavailableException();
         }
     }
 
-
-
-
     public void delete(Long id) {
-        bookCodeRepository.findAll().stream().forEach(bookCode -> {;
+        bookCodeRepository.findAll().forEach(bookCode -> {
+
             if (bookCode.getBook().getId().equals(id)) {
                 bookCodeRepository.delete(bookCode);
             }
@@ -88,7 +84,6 @@ public class BookService {
     public List<Book> getAll() {
         return bookRepository.findAll();
     }
-
 
     public Book findById(Long bookId) {
         return bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
