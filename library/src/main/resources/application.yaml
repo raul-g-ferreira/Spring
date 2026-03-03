@@ -29,3 +29,6 @@ spring:
 google:
   books:
     api-key: ${GOOGLE_BOOKS_API_KEY:sla}
+logging:
+  level:
+    org.springframework.web.reactive.function.client.WebClient: DEBUG
