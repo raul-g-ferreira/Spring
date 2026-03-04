@@ -86,6 +86,6 @@ public class BookService {
     }
 
     public Book findById(Long bookId) {
-        return bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found with id: " + bookId));
+        return bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundOrUnavailableException("Book not found with id: " + bookId));
     }
 }

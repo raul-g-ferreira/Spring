@@ -24,7 +24,7 @@ public class BookCodeService {
         List<BookCode> bookCodes = bookCodeRepository.findAll();
 
         return bookCodeRepository.findBookCodeByIdAndIsAvailable(bookId, true)
-                .orElseThrow(() -> new BookNotFoundOrUnavailableException());
+                .orElseThrow(BookNotFoundOrUnavailableException::new);
     }
 
     public void changeIsAvailable(BookCode bookCode) {

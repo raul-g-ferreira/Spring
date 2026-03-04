@@ -33,6 +33,14 @@ public class BookController {
         return bookService.addBook(book);
     }
 
+    @PostMapping("/add/{quantity}")
+    public Book add(@RequestBody Book book, @PathVariable Integer quantity){
+        for (Integer i = 1; i.compareTo(quantity) < 0; i++) {
+            bookService.addBook(book);
+        }
+        return bookService.addBook(book);
+    }
+
     @PostMapping("/gbook/{isbn}")
     public Book addGBook(@PathVariable String isbn) {
         return bookService.addBook(googleBookService.createBookByIsbn(isbn));

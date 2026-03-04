@@ -7,7 +7,6 @@ import com.kaizen.library.model.BookCode;
 import com.kaizen.library.model.Client;
 import com.kaizen.library.model.Loan;
 import com.kaizen.library.repository.LoanRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,18 +15,19 @@ import java.util.List;
 public class LoanService {
 
     private final LoanRepository loanRepository;
+    private final ClientService clientService;
+    private final BookCodeService bookCodeService;
+    private final BookService bookService;
+    private final EmailService emailService;
 
-    @Autowired
-    private ClientService clientService;
-    @Autowired
-    private BookCodeService bookCodeService;
-    @Autowired
-    private BookService bookService;
-    @Autowired
-    private EmailService emailService;
-
-    public LoanService(LoanRepository loanRepository) {
+    public LoanService(LoanRepository loanRepository, ClientService clientService,
+                       BookCodeService bookCodeService, BookService bookService,
+                       EmailService emailService) {
         this.loanRepository = loanRepository;
+        this.clientService = clientService;
+        this.bookCodeService = bookCodeService;
+        this.bookService = bookService;
+        this.emailService = emailService;
     }
 
     public Loan newLoan(LoanDTO loanDto) {
@@ -46,7 +46,7 @@ public class LoanService {
     }
 
     public void returnBook(Long loanId) {
-        Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new LoanNotFoundException());
+        Loan loan = loanRepository.findById(loanId).orElseThrow(LoanNotFoundException::new);
         BookCode bookCode = loan.getBookCode();
         Book book = bookCode.getBook();
 
