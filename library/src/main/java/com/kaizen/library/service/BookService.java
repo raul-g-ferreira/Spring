@@ -14,20 +14,19 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final BookCodeRepository bookCodeRepository;
+    private final BookCodeService bookCodeService;
 
-    public BookService(BookRepository bookRepository, BookCodeRepository bookCodeRepository) {
+    public BookService(BookRepository bookRepository, BookCodeRepository bookCodeRepository, BookCodeService bookCodeService) {
         this.bookRepository = bookRepository;
         this.bookCodeRepository = bookCodeRepository;
+        this.bookCodeService = bookCodeService;
     }
 
     public Book registerBook(Book book) {
         List<Book> allBooks = bookRepository.findAll();
 
         // Verifica se o livro já existe comparando por title, author e category
-        Book existingBook = allBooks.stream()
-                .filter(b -> b.equals(book))
-                .findFirst()
-                .orElse(null);
+        Book existingBook = allBooks.stream().filter(b -> b.equals(book)).findFirst().orElse(null);
 
         if (existingBook == null) {
             return bookRepository.save(book);
@@ -39,10 +38,7 @@ public class BookService {
         List<Book> allBooks = bookRepository.findAll();
 
         // Verifica se o livro já existe comparando por title, author e category
-        Book existingBook = allBooks.stream()
-                .filter(b -> b.equals(book))
-                .findFirst()
-                .orElse(null);
+        Book existingBook = allBooks.stream().filter(b -> b.equals(book)).findFirst().orElse(null);
 
         if (existingBook != null) {
             // Se existe: aumenta o inStock
@@ -87,5 +83,19 @@ public class BookService {
 
     public Book findById(Long bookId) {
         return bookRepository.findById(bookId).orElseThrow(() -> new BookNotFoundOrUnavailableException("Book not found with id: " + bookId));
+    }
+
+    public Book update(Long id, Book book) {
+        Book existentBook = this.findById(id);
+        List<BookCode> existentBookCodes = bookCodeService.getAll().stream().filter(bookCode -> bookCode.getBook().getId().equals(existentBook.getId())).toList();
+        existentBook.setAuthor(book.getAuthor());
+        existentBook.setTitle(book.getTitle());
+        existentBook.setCategory(book.getCategory());
+
+        for (BookCode bookCode : existentBookCodes) {
+            bookCode.setBook(existentBook);
+            bookCodeService.save(bookCode);
+        }
+        return bookRepository.save(existentBook);
     }
 }

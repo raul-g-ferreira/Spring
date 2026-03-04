@@ -29,24 +29,29 @@ public class BookController {
     }
 
     @PostMapping("/add")
-    public Book add(@RequestBody Book book){
+    public Book add(@RequestBody Book book) {
         return bookService.addBook(book);
     }
 
     @PostMapping("/add/{quantity}")
-    public Book add(@RequestBody Book book, @PathVariable Integer quantity){
+    public Book add(@RequestBody Book book, @PathVariable Integer quantity) {
         for (Integer i = 1; i.compareTo(quantity) < 0; i++) {
             bookService.addBook(book);
         }
         return bookService.addBook(book);
     }
 
-    @PostMapping("/gbook/{isbn}")
-    public Book addGBook(@PathVariable String isbn) {
+    @PostMapping("/import/{isbn}")
+    public Book importBook(@PathVariable String isbn) {
         return bookService.addBook(googleBookService.createBookByIsbn(isbn));
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping("/update/{id}")
+    public Book update(@PathVariable Long id, @RequestBody Book book) {
+        return bookService.update(id, book);
+    }
+
+    @DeleteMapping("/delete/{id}")
     public void delete(@PathVariable Long id) {
         bookService.delete(id);
     }

@@ -23,12 +23,15 @@ public class BookCodeService {
     public BookCode findById(Long bookId) {
         List<BookCode> bookCodes = bookCodeRepository.findAll();
 
-        return bookCodeRepository.findBookCodeByIdAndIsAvailable(bookId, true)
-                .orElseThrow(BookNotFoundOrUnavailableException::new);
+        return bookCodeRepository.findBookCodeByIdAndIsAvailable(bookId, true).orElseThrow(BookNotFoundOrUnavailableException::new);
     }
 
     public void changeIsAvailable(BookCode bookCode) {
         bookCode.setIsAvailable(!bookCode.getIsAvailable());
+        bookCodeRepository.save(bookCode);
+    }
+
+    public void save(BookCode bookCode) {
         bookCodeRepository.save(bookCode);
     }
 }
