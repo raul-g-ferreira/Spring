@@ -1,6 +1,7 @@
 package com.kaizen.library.service;
 
 import com.kaizen.library.exception.BookNotFoundOrUnavailableException;
+import com.kaizen.library.model.Book;
 import com.kaizen.library.model.BookCode;
 import com.kaizen.library.repository.BookCodeRepository;
 import org.springframework.stereotype.Service;
@@ -33,5 +34,10 @@ public class BookCodeService {
 
     public void save(BookCode bookCode) {
         bookCodeRepository.save(bookCode);
+    }
+
+    public BookCode findAvailableByBook(Book book) {
+        return bookCodeRepository.findFirstByBookAndIsAvailable(book, true)
+                .orElseThrow(BookNotFoundOrUnavailableException::new);
     }
 }

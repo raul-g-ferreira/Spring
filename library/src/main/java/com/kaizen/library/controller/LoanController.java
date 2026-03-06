@@ -36,6 +36,12 @@ public class LoanController {
         return ResponseEntity.ok(this.loanService.newLoan(loanDto));
     }
 
+    @PostMapping("/web/loan")
+    public ResponseEntity<Loan> newLoanWeb(@RequestBody LoanDTO loanDto) {
+        logger.info("POST /api/loan/web/loan - Creating new loan with bookId: {}, clientId: {}", loanDto.getBookCodeId(), loanDto.getClientId());
+        return ResponseEntity.ok(this.loanService.newWebLoan(loanDto));
+    }
+
     @PostMapping("/return/{loanId}")
     public ResponseEntity<Void> returnBook(@PathVariable Long loanId) {
         logger.info("POST /api/loan/return/{} - Returning book", loanId);

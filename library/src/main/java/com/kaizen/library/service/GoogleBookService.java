@@ -37,8 +37,8 @@ public class GoogleBookService {
         // 2. Extrai as informações do livro
         GoogleBookDTO.Item item = response.items().getFirst();
         String title = item.volumeInfo().title();
-        String author = item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() ? item.volumeInfo().authors().getFirst() : "Autor Desconecido";
-        String category = item.volumeInfo().mainCategory() != null ? item.volumeInfo().mainCategory() : "Categoria Desconecida";
+        String author = item.volumeInfo().authors() != null && !item.volumeInfo().authors().isEmpty() ? item.volumeInfo().authors().getFirst() : "Autor Desconhecido";
+        String category = item.volumeInfo().mainCategory() != null ? item.volumeInfo().mainCategory() : "Desconhecida";
 
         return new Book(title, author, category);
     }

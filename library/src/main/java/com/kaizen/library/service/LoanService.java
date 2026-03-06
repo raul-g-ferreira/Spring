@@ -45,6 +45,20 @@ public class LoanService {
         return loanRepository.save(loan);
     }
 
+    public Loan newWebLoan(LoanDTO loanDto) {
+        Client client = clientService.findById(loanDto.getClientId());
+        Book book = bookService.findById(loanDto.getBookCodeId());
+        BookCode bookCode = bookCodeService.findAvailableByBook(book);
+        Loan loan = new Loan(client, bookCode);
+
+        bookService.decreaseStock(book);
+        bookCodeService.changeIsAvailable(bookCode);
+
+        emailService.sendEmailLoan(client.getEmail(), book.getTitle());
+
+        return loanRepository.save(loan);
+    }
+
     public void returnBook(Long loanId) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(LoanNotFoundException::new);
         BookCode bookCode = loan.getBookCode();

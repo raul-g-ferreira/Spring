@@ -32,7 +32,7 @@ public class ClientService {
     }
 
     public void delete(Long id) {
-       boolean hasLoan = loanRepository.findAll().stream().anyMatch(loan -> loan.getClient().getId().equals(id));
+        boolean hasLoan = loanRepository.findAll().stream().anyMatch(loan -> loan.getClient().getId().equals(id));
         if (hasLoan) {
             throw new IllegalStateException("Client has active loans and cannot be deleted.");
         }
